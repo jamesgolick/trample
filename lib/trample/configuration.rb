@@ -1,6 +1,9 @@
 module Trample
   class Configuration
+    attr_reader :pages
+
     def initialize
+      @pages = []
       yield self
     end
 
@@ -12,6 +15,10 @@ module Trample
     def iterations(*value)
       @iterations = value.first unless value.empty?
       @iterations
+    end
+
+    def get(url)
+      @pages << Page.new(:get, url)
     end
   end
 end
