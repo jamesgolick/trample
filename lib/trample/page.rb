@@ -6,5 +6,11 @@ module Trample
       @request_method = request_method
       @url            = url
     end
+
+    def ==(other)
+      other.is_a?(Page) && 
+        other.request_method == request_method &&
+          other.url == url
+    end
   end
 end
