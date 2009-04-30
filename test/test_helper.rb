@@ -11,9 +11,8 @@ class Test::Unit::TestCase
   include RR::Adapters::TestUnit unless include?(RR::Adapters::TestUnit)
 
   protected
-  def trample(options)
-    dir = File.expand_path(File.dirname(__FILE__))
-    `#{dir}/../bin/trample #{options}`
+  def trample(config)
+    Trample::Cli.new.start(config)
   end
 end
 
