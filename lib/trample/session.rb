@@ -1,5 +1,7 @@
 module Trample
   class Session
+    include Logging
+
     attr_reader :config
 
     def initialize(config)
@@ -16,6 +18,7 @@ module Trample
 
     protected
       def request(page)
+        logger.info "#{page.request_method.to_s.upcase} #{page.url}"
         RestClient.send(page.request_method, page.url)
       end
   end
