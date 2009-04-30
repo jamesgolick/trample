@@ -2,7 +2,10 @@ require 'test_helper'
 
 class RunnerTest < Test::Unit::TestCase
   def setup
-    @config = Trample::Configuration.new { |t| t.concurrency 2 }
+    @config = Trample::Configuration.new do  |t| 
+      t.concurrency 2 
+      t.iterations  5
+    end
   end
 
   context "Running a trample" do
@@ -19,6 +22,13 @@ class RunnerTest < Test::Unit::TestCase
       stub.proxy(Trample::Session).new(@config).times(2) do |s|
         mock(s).trample
         s
+      end
+    end
+
+    before_should "block until all the threads terminate" do
+      stub.proxy(Thread).new(@config) do |t|
+        mock(t).join
+        t
       end
     end
   end

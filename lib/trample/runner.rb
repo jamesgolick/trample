@@ -8,11 +8,14 @@ module Trample
     end
 
     def trample
-      @config.concurrency.times do
-        threads << Thread.new(@config) do |c|
+      config.concurrency.times do
+        thread = Thread.new(@config) do |c|
           Session.new(c).trample
         end
+        threads << thread
       end
+
+      threads.each { |t| t.join }
     end
   end
 end
