@@ -3,11 +3,12 @@ module Trample
     include Logging
     include Timer
 
-    attr_reader :config, :response_times
+    attr_reader :config, :response_times, :cookies
 
     def initialize(config)
       @config         = config
       @response_times = []
+      @cookies        = {}
     end
 
     def trample
@@ -21,7 +22,10 @@ module Trample
     protected
       def request(page)
         length = time do
-          RestClient.send(page.request_method, page.url)
+          response = RestClient.send(page.request_method, page.url, :cookies => cookies)
+          # this is ugly, but it's the only way that I could get the test to pass
+          # because rr keeps a reference to the arguments, not a copy. ah well.
+          @cookies = cookies.merge(response.cookies)
         end
         response_times << length
         logger.info "#{page.request_method.to_s.upcase} #{page.url} #{length}s"

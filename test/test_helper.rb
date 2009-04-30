@@ -14,5 +14,12 @@ class Test::Unit::TestCase
   def trample(config)
     Trample::Cli.new.start(config)
   end
+
+  def mock_get(url, opts={})
+    mock(RestClient).get(url, :cookies => opts[:cookies] || {}).times(opts[:times]) do
+      response = RestClient::Response.new("", stub!)
+      stub(response).cookies { opts[:return_cookies] || {} }
+    end
+  end
 end
 

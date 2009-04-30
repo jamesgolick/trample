@@ -16,8 +16,8 @@ class SessionTest < Test::Unit::TestCase
     end
 
     before_should "visit the pages iterations times each" do
-      mock(RestClient).get("http://google.com/").times(2)
-      mock(RestClient).get("http://amazon.com/").times(2)
+      mock_get("http://google.com/", :times => 2)
+      mock_get("http://amazon.com/", :times => 2)
     end
   end
 
@@ -29,6 +29,25 @@ class SessionTest < Test::Unit::TestCase
 
     should "record the length of tiem it took to visit that page" do
       assert_equal [1.4, 1.4, 1.4, 1.4], @session.response_times
+    end
+  end
+
+  context "If a page responds with a cookie" do
+    should "pass that cookie on to the next page" do
+      stub(RestClient).get(anything, anything) do
+        response = RestClient::Response.new("", stub!)
+        stub(response).cookies { {"xyz" => "abc"} }
+      end
+
+      @config = Trample::Configuration.new do |t|
+        t.iterations 2
+        t.get("http://amazon.com/")
+      end
+
+      @session = Trample::Session.new(@config)
+      @session.trample
+
+      assert_received(RestClient) { |c| c.get("http://amazon.com/", :cookies => {"xyz" => "abc"}) }
     end
   end
 end
