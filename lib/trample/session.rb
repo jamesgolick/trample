@@ -14,21 +14,24 @@ module Trample
     def trample
       @config.iterations.times do
         @config.pages.each do |p|
-          request p
+          hit p
         end
       end
     end
 
     protected
-      def request(page)
-        length = time do
-          @last_response = RestClient.send(page.request_method, page.url, :cookies => cookies)
-          # this is ugly, but it's the only way that I could get the test to pass
-          # because rr keeps a reference to the arguments, not a copy. ah well.
-        end
+      def hit(page)
+        response_times << request(page)
+        # this is ugly, but it's the only way that I could get the test to pass
+        # because rr keeps a reference to the arguments, not a copy. ah well.
         @cookies = cookies.merge(last_response.cookies)
-        response_times << length
-        logger.info "#{page.request_method.to_s.upcase} #{page.url} #{length}s"
+        logger.info "#{page.request_method.to_s.upcase} #{page.url} #{response_times.last}s"
+      end
+
+      def request(page)
+        time do
+          @last_response = RestClient.send(page.request_method, page.url, :cookies => cookies)
+        end
       end
   end
 end
