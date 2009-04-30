@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require File.dirname(__FILE__) + '/../lib/trample'
+
+Trample::Cli.start
+
