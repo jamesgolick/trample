@@ -8,6 +8,7 @@ module Trample
   autoload :Runner, File.dirname(__FILE__) + "/trample/runner"
   autoload :Cli, File.dirname(__FILE__) + "/trample/cli"
   autoload :Logging, File.dirname(__FILE__) + "/trample/logging"
+  autoload :Timer, File.dirname(__FILE__) + "/trample/timer"
 
   class << self
     attr_reader :current_configuration
