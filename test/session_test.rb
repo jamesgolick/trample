@@ -24,10 +24,14 @@ class SessionTest < Test::Unit::TestCase
   context "Visiting a page" do
     setup do
       stub(@session).time { 1.4 }
+      stub(@session).last_response do
+        response = RestClient::Response.new("", stub!)
+        stub(response).cookies { {} }
+      end
       @session.trample
     end
 
-    should "record the length of tiem it took to visit that page" do
+    should "record the length of time it took to visit that page" do
       assert_equal [1.4, 1.4, 1.4, 1.4], @session.response_times
     end
   end
