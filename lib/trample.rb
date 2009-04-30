@@ -4,6 +4,7 @@ module Trample
   autoload :Configuration, File.dirname(__FILE__) + "/trample/configuration"
   autoload :Page, File.dirname(__FILE__) + "/trample/page"
   autoload :Session, File.dirname(__FILE__) + "/trample/session"
+  autoload :Runner, File.dirname(__FILE__) + "/trample/runner"
 
   class << self
     attr_reader :current_configuration
