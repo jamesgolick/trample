@@ -33,12 +33,12 @@ class ConfigurationTest < Test::Unit::TestCase
     end
 
     should "not be equal if any of the objects are different" do
-      identical_config = Trample::Configuration.new do |t|
+      non_identical_config = Trample::Configuration.new do |t|
         t.concurrency 3
         t.iterations  1
         t.get "http://google.com/"
       end
-      assert_not_equal identical_config, @config
+      assert_not_equal non_identical_config, @config
     end
   end
 end
