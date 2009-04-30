@@ -1,3 +1,4 @@
+require 'log4r'
 require 'rest_client'
 
 module Trample
@@ -6,6 +7,7 @@ module Trample
   autoload :Session, File.dirname(__FILE__) + "/trample/session"
   autoload :Runner, File.dirname(__FILE__) + "/trample/runner"
   autoload :Cli, File.dirname(__FILE__) + "/trample/cli"
+  autoload :Logging, File.dirname(__FILE__) + "/trample/logging"
 
   class << self
     attr_reader :current_configuration
