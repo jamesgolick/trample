@@ -20,5 +20,12 @@ module Trample
     def get(url)
       @pages << Page.new(:get, url)
     end
+
+    def ==(other)
+      other.is_a?(Configuration) &&
+        other.pages == pages &&
+        other.concurrency == concurrency &&
+        other.iterations  == iterations
+    end
   end
 end
