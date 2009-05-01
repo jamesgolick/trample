@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ConfigurationTest < Test::Unit::TestCase
-  context "Configuration trample" do
+  context "Configuring trample" do
     setup do
       @config = Trample::Configuration.new do
         concurrency 2
