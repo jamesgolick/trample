@@ -21,6 +21,10 @@ module Trample
       @pages << Page.new(:get, url)
     end
 
+    def post(url, params)
+      @pages << Page.new(:post, url, params)
+    end
+
     def ==(other)
       other.is_a?(Configuration) &&
         other.pages == pages &&

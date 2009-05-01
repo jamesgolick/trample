@@ -7,6 +7,7 @@ class ConfigurationTest < Test::Unit::TestCase
         concurrency 2
         iterations  1
         get "http://google.com/"
+        post "http://google.com/", {:q => "something"}
       end
     end
 
@@ -19,8 +20,12 @@ class ConfigurationTest < Test::Unit::TestCase
     end
 
     should "add get requests to an array of pages" do
-      assert_equal 1, @config.pages.length
       assert_equal Trample::Page.new(:get, "http://google.com/"), @config.pages.first
+    end
+
+    should "add post requests to the array of pages, including their params" do
+      expected = Trample::Page.new(:post, "http://google.com/", {:q => "something"})
+      assert_equal expected, @config.pages.last
     end
 
     should "be equal if all the objects are the same" do
@@ -28,6 +33,7 @@ class ConfigurationTest < Test::Unit::TestCase
         concurrency 2
         iterations  1
         get "http://google.com/"
+        post "http://google.com/", {:q => "something"}
       end
       assert_equal identical_config, @config
     end
