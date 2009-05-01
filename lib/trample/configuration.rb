@@ -25,6 +25,15 @@ module Trample
       @pages << Page.new(:post, url, params || block)
     end
 
+    def login
+      if block_given?
+        yield
+        @login = pages.pop
+      end
+
+      @login
+    end
+
     def ==(other)
       other.is_a?(Configuration) &&
         other.pages == pages &&

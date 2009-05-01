@@ -10,6 +10,11 @@ class ConfigurationTest < Test::Unit::TestCase
         get "http://google.com/"
         post "http://google.com/", {:q => "something"}
         post "http://google.com/", &@params_proc
+        login do
+          post "http://google.com/login" do
+            { :q => "whatever" }
+          end
+        end
       end
     end
 
@@ -33,6 +38,11 @@ class ConfigurationTest < Test::Unit::TestCase
     should "add post requests to the array of pages, including their block-based params" do
       expected = Trample::Page.new(:post, "http://google.com/", @params_proc)
       assert_equal expected, @config.pages[2]
+    end
+
+    should "support a login parameter which contains a page to hit with params" do
+      assert_equal "http://google.com/login", @config.login.url
+      assert_equal({:q => "whatever"}, @config.login.parameters)
     end
 
     should "be equal if all the objects are the same" do
