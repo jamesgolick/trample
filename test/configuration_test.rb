@@ -3,10 +3,10 @@ require 'test_helper'
 class ConfigurationTest < Test::Unit::TestCase
   context "Configuration trample" do
     setup do
-      @config = Trample::Configuration.new do |t|
-        t.concurrency 2
-        t.iterations  1
-        t.get "http://google.com/"
+      @config = Trample::Configuration.new do
+        concurrency 2
+        iterations  1
+        get "http://google.com/"
       end
     end
 
@@ -24,19 +24,19 @@ class ConfigurationTest < Test::Unit::TestCase
     end
 
     should "be equal if all the objects are the same" do
-      identical_config = Trample::Configuration.new do |t|
-        t.concurrency 2
-        t.iterations  1
-        t.get "http://google.com/"
+      identical_config = Trample::Configuration.new do
+        concurrency 2
+        iterations  1
+        get "http://google.com/"
       end
       assert_equal identical_config, @config
     end
 
     should "not be equal if any of the objects are different" do
-      non_identical_config = Trample::Configuration.new do |t|
-        t.concurrency 3
-        t.iterations  1
-        t.get "http://google.com/"
+      non_identical_config = Trample::Configuration.new do
+        concurrency 3
+        iterations  1
+        get "http://google.com/"
       end
       assert_not_equal non_identical_config, @config
     end

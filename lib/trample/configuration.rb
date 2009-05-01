@@ -2,9 +2,9 @@ module Trample
   class Configuration
     attr_reader :pages
 
-    def initialize
+    def initialize(&block)
       @pages = []
-      yield self
+      instance_eval(&block)
     end
 
     def concurrency(*value)

@@ -2,10 +2,10 @@ require 'test_helper'
 
 class SessionTest < Test::Unit::TestCase
   def setup
-    @config = Trample::Configuration.new do |t|
-      t.iterations 2
-      t.get("http://google.com/")
-      t.get("http://amazon.com/")
+    @config = Trample::Configuration.new do
+      iterations 2
+      get "http://google.com/"
+      get "http://amazon.com/"
     end
     @session = Trample::Session.new(@config)
   end
@@ -43,9 +43,9 @@ class SessionTest < Test::Unit::TestCase
         stub(response).cookies { {"xyz" => "abc"} }
       end
 
-      @config = Trample::Configuration.new do |t|
-        t.iterations 2
-        t.get("http://amazon.com/")
+      @config = Trample::Configuration.new do
+        iterations 2
+        get "http://amazon.com/"
       end
 
       @session = Trample::Session.new(@config)

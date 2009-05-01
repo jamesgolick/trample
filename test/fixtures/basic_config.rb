@@ -1,5 +1,5 @@
 Trample.configure do |t|
-  t.concurrency 2
-  t.iterations  1
-  t.get "http://google.com"
+  concurrency 2
+  iterations  1
+  get "http://google.com"
 end
