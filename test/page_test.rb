@@ -3,7 +3,7 @@ require 'test_helper'
 class PageTest < Test::Unit::TestCase
   context "A page" do
     setup do
-      @page = Trample::Page.new(:get, "http://google.com/")
+      @page = Trample::Page.new(:get, "http://google.com/", :username => "joetheuser")
     end
 
     should "have a request_method" do
@@ -12,6 +12,10 @@ class PageTest < Test::Unit::TestCase
 
     should "have a url" do
       assert_equal "http://google.com/", @page.url
+    end
+
+    should "have request parameters" do
+      assert_equal({:username => "joetheuser"}, @page.parameters)
     end
 
     should "be equal with the same request_method and url" do
