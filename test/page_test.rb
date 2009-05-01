@@ -26,5 +26,15 @@ class PageTest < Test::Unit::TestCase
       assert_not_equal Trample::Page.new(:get, "http://google.com"), Trample::Page.new(:get, "http://google.com/asdf")
     end
   end
+
+  context "Block-based request parameters" do
+    setup do
+      @page = Trample::Page.new(:get, "http://google.com/", lambda { { :username => "joetheuser" } })
+    end
+
+    should "be resolved when the page is asked for its parameters" do
+      assert_equal({:username => "joetheuser"}, @page.parameters)
+    end
+  end
 end
 
