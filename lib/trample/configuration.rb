@@ -21,8 +21,8 @@ module Trample
       @pages << Page.new(:get, url)
     end
 
-    def post(url, params)
-      @pages << Page.new(:post, url, params)
+    def post(url, params = nil, &block)
+      @pages << Page.new(:post, url, params || block)
     end
 
     def ==(other)

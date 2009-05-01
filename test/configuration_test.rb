@@ -3,11 +3,13 @@ require 'test_helper'
 class ConfigurationTest < Test::Unit::TestCase
   context "Configuring trample" do
     setup do
+      @params_proc = lambda { { :q => "the meaning of life" } }
       @config = Trample::Configuration.new do
         concurrency 2
         iterations  1
         get "http://google.com/"
         post "http://google.com/", {:q => "something"}
+        post "http://google.com/", &@params_proc
       end
     end
 
@@ -25,7 +27,12 @@ class ConfigurationTest < Test::Unit::TestCase
 
     should "add post requests to the array of pages, including their params" do
       expected = Trample::Page.new(:post, "http://google.com/", {:q => "something"})
-      assert_equal expected, @config.pages.last
+      assert_equal expected, @config.pages[1]
+    end
+
+    should "add post requests to the array of pages, including their block-based params" do
+      expected = Trample::Page.new(:post, "http://google.com/", @params_proc)
+      assert_equal expected, @config.pages[2]
     end
 
     should "be equal if all the objects are the same" do
@@ -34,6 +41,7 @@ class ConfigurationTest < Test::Unit::TestCase
         iterations  1
         get "http://google.com/"
         post "http://google.com/", {:q => "something"}
+        post "http://google.com/", &@params_proc
       end
       assert_equal identical_config, @config
     end
