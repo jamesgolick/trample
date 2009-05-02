@@ -21,5 +21,13 @@ class Test::Unit::TestCase
       stub(response).cookies { opts[:return_cookies] || {} }
     end
   end
+
+  def mock_post(url, opts={})
+    mock(RestClient).post(url, opts[:payload],
+                               :cookies => opts[:cookies] || {}).times(opts[:times]) do
+      response = RestClient::Response.new("", stub!)
+      stub(response).cookies { opts[:return_cookies] || {} }
+    end
+  end
 end
 

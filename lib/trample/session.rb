@@ -30,8 +30,16 @@ module Trample
 
       def request(page)
         time do
-          @last_response = RestClient.send(page.request_method, page.url, :cookies => cookies)
+          @last_response = send(page.request_method, page)
         end
+      end
+
+      def get(page)
+        RestClient.get(page.url, :cookies => cookies)
+      end
+
+      def post(page)
+        RestClient.post(page.url, page.parameters, :cookies => cookies)
       end
   end
 end

@@ -6,6 +6,7 @@ class SessionTest < Test::Unit::TestCase
       iterations 2
       get "http://google.com/"
       get "http://amazon.com/"
+      post "http://google.com/"
     end
     @session = Trample::Session.new(@config)
   end
@@ -18,6 +19,7 @@ class SessionTest < Test::Unit::TestCase
     before_should "visit the pages iterations times each" do
       mock_get("http://google.com/", :times => 2)
       mock_get("http://amazon.com/", :times => 2)
+      mock_post("http://google.com/", :times => 2)
     end
   end
 
@@ -32,7 +34,7 @@ class SessionTest < Test::Unit::TestCase
     end
 
     should "record the length of time it took to visit that page" do
-      assert_equal [1.4, 1.4, 1.4, 1.4], @session.response_times
+      assert_equal [1.4, 1.4, 1.4, 1.4, 1.4, 1.4], @session.response_times
     end
   end
 
