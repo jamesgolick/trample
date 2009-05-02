@@ -56,5 +56,24 @@ class SessionTest < Test::Unit::TestCase
       assert_received(RestClient) { |c| c.get("http://amazon.com/", :cookies => {"xyz" => "abc"}) }
     end
   end
+
+  context "A session with login" do
+    # TODO: the order of the requests isn't being tested here. not 
+    # sure if it's possible with rr
+    should "hit the login once at the beginning of the session" do
+      @config = Trample::Configuration.new do
+        iterations 2
+        login do
+          post "http://google.com/login" do
+            {:user => "xyz", :password => "swordfish"}
+          end
+        end
+        get "http://google.com/"
+      end
+      stub_get(anything, :times => 2)
+      mock_post("http://google.com/login", :payload => {:user => "xyz", :password => "swordfish"}, :times => 1)
+      Trample::Session.new(@config).trample
+    end
+  end
 end
 

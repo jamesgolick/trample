@@ -12,6 +12,8 @@ module Trample
     end
 
     def trample
+      puts @config.login.inspect
+      hit @config.login unless @config.login.nil?
       @config.iterations.times do
         @config.pages.each do |p|
           hit p

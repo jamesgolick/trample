@@ -29,5 +29,12 @@ class Test::Unit::TestCase
       stub(response).cookies { opts[:return_cookies] || {} }
     end
   end
+
+  def stub_get(url, opts = {})
+    stub(RestClient).get(url, :cookies => opts[:cookies] || {}).times(opts[:times]) do
+      response = RestClient::Response.new("", stub!)
+      stub(response).cookies { opts[:return_cookies] || {} }
+    end
+  end
 end
 
