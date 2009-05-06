@@ -12,7 +12,6 @@ module Trample
     end
 
     def trample
-      puts @config.login.inspect
       hit @config.login unless @config.login.nil?
       @config.iterations.times do
         @config.pages.each do |p|
@@ -27,7 +26,7 @@ module Trample
         # this is ugly, but it's the only way that I could get the test to pass
         # because rr keeps a reference to the arguments, not a copy. ah well.
         @cookies = cookies.merge(last_response.cookies)
-        logger.info "#{page.request_method.to_s.upcase} #{page.url} #{response_times.last}s"
+        logger.info "#{page.request_method.to_s.upcase} #{page.url} #{response_times.last}s #{last_response.code}"
       end
 
       def request(page)
