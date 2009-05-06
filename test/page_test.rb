@@ -27,13 +27,23 @@ class PageTest < Test::Unit::TestCase
     end
   end
 
-  context "Block-based request parameters" do
+  context "Block-based request parameters for POST requests" do
     setup do
-      @page = Trample::Page.new(:get, "http://google.com/", lambda { { :username => "joetheuser" } })
+      @page = Trample::Page.new(:post, "http://google.com/", lambda { { :username => "joetheuser" } })
     end
 
     should "be resolved when the page is asked for its parameters" do
       assert_equal({:username => "joetheuser"}, @page.parameters)
+    end
+  end
+
+  context "Block based parameters for GET requests" do
+    setup do
+      @page = Trample::Page.new(:get, "http://mysite.com/somethings/:id", lambda { {:id => 5} })
+    end
+
+    should "interpolate those parameters with the url string" do
+      assert_equal "http://mysite.com/somethings/5", @page.url
     end
   end
 end
