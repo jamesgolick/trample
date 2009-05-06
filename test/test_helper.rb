@@ -19,6 +19,7 @@ class Test::Unit::TestCase
     mock(RestClient).get(url, :cookies => opts[:cookies] || {}).times(opts[:times]) do
       response = RestClient::Response.new("", stub!)
       stub(response).cookies { opts[:return_cookies] || {} }
+      stub(response).code { 200 }
     end
   end
 
@@ -27,6 +28,7 @@ class Test::Unit::TestCase
                                :cookies => opts[:cookies] || {}).times(opts[:times]) do
       response = RestClient::Response.new("", stub!)
       stub(response).cookies { opts[:return_cookies] || {} }
+      stub(response).code { 200 }
     end
   end
 
@@ -34,6 +36,7 @@ class Test::Unit::TestCase
     stub(RestClient).get(url, :cookies => opts[:cookies] || {}).times(opts[:times]) do
       response = RestClient::Response.new("", stub!)
       stub(response).cookies { opts[:return_cookies] || {} }
+      stub(response).code { 200 }
     end
   end
 end

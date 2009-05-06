@@ -29,6 +29,7 @@ class SessionTest < Test::Unit::TestCase
       stub(@session).last_response do
         response = RestClient::Response.new("", stub!)
         stub(response).cookies { {} }
+        stub(response).code { 200 }
       end
       @session.trample
     end
@@ -43,6 +44,7 @@ class SessionTest < Test::Unit::TestCase
       stub(RestClient).get(anything, anything) do
         response = RestClient::Response.new("", stub!)
         stub(response).cookies { {"xyz" => "abc"} }
+        stub(response).code { 200 }
       end
 
       @config = Trample::Configuration.new do
