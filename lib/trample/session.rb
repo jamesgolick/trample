@@ -3,12 +3,13 @@ module Trample
     include Logging
     include Timer
 
-    attr_reader :config, :response_times, :cookies, :last_response
+    attr_reader :config, :response_times, :cookies, :last_response, :page_requests
 
     def initialize(config)
       @config         = config
       @response_times = []
       @cookies        = {}
+      @page_requests  = []
     end
 
     def trample
@@ -16,6 +17,18 @@ module Trample
       @config.iterations.times do
         @config.pages.each do |p|
           hit p
+        end
+      end
+    end
+
+    def replay
+      unless page_requests.empty?
+        @cookies = {}
+
+        page_requests.each do |page_request|
+          page_request.cookies = @cookies
+          response = page_request.hit
+          @cookies.merge(response.cookies)
         end
       end
     end
@@ -31,16 +44,10 @@ module Trample
 
       def request(page)
         time do
-          @last_response = send(page.request_method, page)
+          request = PageRequest.new(page, cookies)
+          @page_requests << request
+          @last_response = request.hit
         end
-      end
-
-      def get(page)
-        RestClient.get(page.url, :cookies => cookies)
-      end
-
-      def post(page)
-        RestClient.post(page.url, page.parameters, :cookies => cookies)
       end
   end
 end
