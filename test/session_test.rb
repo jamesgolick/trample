@@ -77,5 +77,26 @@ class SessionTest < Test::Unit::TestCase
       Trample::Session.new(@config).trample
     end
   end
-end
 
+  context "Replaying page requests" do
+    context "when there are no page requests on the session" do
+      should "not iterate over the page requests" do
+        dont_allow(@session.page_requests).each
+        @session.replay
+      end
+    end
+
+    context "when there are page requests on the session" do
+      setup do
+        mock_get("http://google.com/", :times => 4)
+        mock_get("http://amazon.com/", :times => 4)
+        mock_post("http://google.com/", :times => 4)
+        @session.trample
+      end
+
+      should "be able to replay the sessions" do
+        @session.replay
+      end
+    end
+  end
+end
