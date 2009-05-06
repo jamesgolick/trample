@@ -1,6 +1,38 @@
 = trample
 
-Description goes here.
+Trample is a flexible load simulation tool. 
+
+Other load sim tools make requests to a static list of urls. They spawn n threads and make requests to those urls in succession, in each of the threads.  If your applicaition makes use of any kind of caching, this kind of load simulation is rather forgiving. 
+
+Take the example of a popular social networking application. The data required to load a single set of urls is likely to fit nicely in the database server's cache (even on a small db server). So, having a single user hammer a finite set of pages will be easy for a normal sized database server to handle. Performance in this context is not representative of a real world scenario.
+
+Trample allows you to provide parameter values inside of a ruby block (which is a lambda function). The block is executed each time that parameters are needed. So, if you use randomization in the block, you should theoretically get different values every time.
+
+That way, you can have trample log in as several different users and request different data in each session.
+
+= How To
+
+Trample uses a ruby DSL for configuration.
+  
+  Trample.configure do
+    concurrency 5
+    iterations  10
+    login do
+      post "http://yoursite.com/login" do
+        {:username => User.random.username, :password => "swordfish"}
+      end
+    end
+    get  "http://yoursite.com/somewhere"
+    post "http://yoursite.com/something" do
+      {:a_parameter => "a value"}
+    end
+  end
+
+The above configuration will start 5 (concurrency) sessions by logging in as a random user at the url in the login block. Then, it'll hit the two urls underneath it 10 (iterations) times during each session.
+
+To run trample, save your configuration somewhere and run:
+
+  trample start /path/to/your/trample/config.rb
 
 == Copyright
 
