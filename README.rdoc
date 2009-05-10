@@ -6,7 +6,7 @@ Other load sim tools make requests to a static list of urls. They spawn n thread
 
 Take the example of a popular social networking application. The data required to load a single set of urls is likely to fit nicely in the database server's cache (even on a small db server). So, having a single user hammer a finite set of pages will be easy for a normal sized database server to handle. Performance in this context is not representative of a real world scenario.
 
-Trample allows you to provide parameter values inside of a ruby block (which is a lambda function). The block is executed each time that parameters are needed. So, if you use randomization in the block, you should theoretically get different values every time.
+Trample allows you to provide parameter values inside of a ruby block (which is a lambda function). The block is executed each time the parameters are needed. So, if you use randomization in the block, you should theoretically get different values every time.
 
 That way, you can have trample log in as several different users and request different data in each session.
 
