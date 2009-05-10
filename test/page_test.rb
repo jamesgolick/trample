@@ -49,6 +49,11 @@ class PageTest < Test::Unit::TestCase
     should "interpolate those parameters with the url string" do
       assert_equal "http://mysite.com/somethings/5", @page.url
     end
+
+    should "interpolate a different parameter each time" do
+      page = Trample::Page.new(:get, "http://mysite.com/somethings/:id", lambda { {:id => rand(10)} })
+      assert_not_equal page.url, page.url
+    end
   end
 end
 
