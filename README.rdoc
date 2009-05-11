@@ -2,11 +2,11 @@
 
 Trample is a flexible load simulation tool. 
 
-Other load sim tools make requests to a static list of urls. They spawn n threads and make requests to those urls in succession, in each of the threads.  If your applicaition makes use of any kind of caching, this kind of load simulation is rather forgiving. 
+Most load sim tools make requests to a static list of urls. They spawn n threads and make requests to the urls on the list in succession, in each thread. Unfortunately, though, if your applicaition makes use of any kind of caching (including your database's internal caching facilities), this kind of load simulation is unrealistic.
 
-Take the example of a popular social networking application. The data required to load a single set of urls is likely to fit nicely in the database server's cache (even on a small db server). So, having a single user hammer a finite set of pages will be easy for a normal sized database server to handle. Performance in this context is not representative of a real world scenario.
+The data required to serve a single set of urls is likely to fit nicely in the database server's cache (even on a small server). So, having a single user hammer a finite set of pages will make your application look much faster than it really is.
 
-Trample allows you to provide parameter values inside of a ruby block (which is a lambda function). The block is executed each time the parameters are needed. So, if you use randomization in the block, you should theoretically get different values every time.
+Trample allows you to provide parameter values inside of a block (a lambda function, for non-rubyists). The block is executed each time the parameters are needed. So, if you use randomization in the block, you should (theoretically) get different values every time.
 
 That way, you can have trample log in as several different users and request different data in each session.
 
