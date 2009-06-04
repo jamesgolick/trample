@@ -17,8 +17,8 @@ module Trample
       @iterations
     end
 
-    def get(url)
-      @pages << Page.new(:get, url)
+    def get(url, &block)
+      @pages << Page.new(:get, url, block || {})
     end
 
     def post(url, params = nil, &block)

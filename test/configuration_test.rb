@@ -7,7 +7,9 @@ class ConfigurationTest < Test::Unit::TestCase
       @config = Trample::Configuration.new do
         concurrency 2
         iterations  1
-        get "http://google.com/"
+        get "http://google.com/" do
+          {:a => 'b'}
+        end
         post "http://google.com/", {:q => "something"}
         post "http://google.com/", &@params_proc
         login do
@@ -28,6 +30,10 @@ class ConfigurationTest < Test::Unit::TestCase
 
     should "add get requests to an array of pages" do
       assert_equal Trample::Page.new(:get, "http://google.com/"), @config.pages.first
+    end
+
+    should "add get params to the array of pages" do
+      assert_equal({:a => "b"}, @config.pages.first.parameters)
     end
 
     should "add post requests to the array of pages, including their params" do
